@@ -118,6 +118,8 @@ const products = [
 
 // Header Component
 function Header({ cartCount, toggleCart, cartIconRef }) {
+  const [activePage, setActivePage] = React.useState("beranda");
+
   return (
     <header className="header">
       <div className="nav-container">
@@ -125,10 +127,46 @@ function Header({ cartCount, toggleCart, cartIconRef }) {
           ShopEase
         </a>
         <nav className="nav-links">
-          <a href="#">Beranda</a>
-          <a href="#">Produk</a>
-          <a href="#">Tentang</a>
-          <a href="#">Kontak</a>
+          <a
+            href="#"
+            className={activePage === "beranda" ? "active" : ""}
+            onClick={() => setActivePage("beranda")}
+          >
+            <i className="fas fa-home"></i>
+            <span>Beranda</span>
+          </a>
+          <a
+            href="#"
+            className={activePage === "produk" ? "active" : ""}
+            onClick={() => setActivePage("produk")}
+          >
+            <i className="fas fa-shopping-bag"></i>
+            <span>Produk</span>
+          </a>
+          <a
+            href="#"
+            className={activePage === "tentang" ? "active" : ""}
+            onClick={() => setActivePage("tentang")}
+          >
+            <i className="fas fa-info-circle"></i>
+            <span>Tentang</span>
+          </a>
+          <a
+            href="#"
+            className={activePage === "kontak" ? "active" : ""}
+            onClick={() => setActivePage("kontak")}
+          >
+            <i className="fas fa-phone"></i>
+            <span>Kontak</span>
+          </a>
+          <a
+            href="#"
+            className={activePage === "akun" ? "active" : ""}
+            onClick={() => setActivePage("akun")}
+          >
+            <i className="fas fa-user"></i>
+            <span>Akun</span>
+          </a>
         </nav>
         <div className="cart-icon" onClick={toggleCart} ref={cartIconRef}>
           <i className="fas fa-shopping-cart"></i>
@@ -362,6 +400,121 @@ function SuccessModal({ isOpen, onClose }) {
   );
 }
 
+// Services Component
+function Services({ addToCart, showProductDetail }) {
+  const services = [
+    {
+      id: 1,
+      title: "Produk Lokal",
+      icon: "fas fa-store",
+      color: "#4CAF50",
+      items: products.slice(0, 4),
+    },
+    {
+      id: 2,
+      title: "Produk Tren",
+      icon: "fas fa-fire",
+      color: "#FF5722",
+      items: products.slice(4, 8),
+    },
+    {
+      id: 3,
+      title: "Flash Sale",
+      icon: "fas fa-bolt",
+      color: "#FFC107",
+      items: products.slice(8, 12),
+    },
+    {
+      id: 4,
+      title: "Promo Produk",
+      icon: "fas fa-tag",
+      color: "#E91E63",
+      items: products.slice(12, 16),
+    },
+  ];
+
+  const [activeService, setActiveService] = React.useState(0);
+  const [touchStart, setTouchStart] = React.useState(null);
+  const [touchEnd, setTouchEnd] = React.useState(null);
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && activeService < services.length - 1) {
+      setActiveService((prev) => prev + 1);
+    }
+    if (isRightSwipe && activeService > 0) {
+      setActiveService((prev) => prev - 1);
+    }
+  };
+
+  return (
+    <div className="services-section">
+      <div className="services-header">
+        <h2>Layanan Kami</h2>
+        <div className="services-nav">
+          {services.map((service, index) => (
+            <button
+              key={service.id}
+              className={`service-nav-btn ${
+                activeService === index ? "active" : ""
+              }`}
+              onClick={() => setActiveService(index)}
+              style={{ "--service-color": service.color }}
+            >
+              <i className={service.icon}></i>
+              <span>{service.title}</span>
+            </button>
+          ))}
+          <button className="service-nav-btn view-all">
+            <i className="fas fa-th-large"></i>
+            <span>Lihat Semua</span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        className="services-slider"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          className="services-track"
+          style={{ transform: `translateX(-${activeService * 100}%)` }}
+        >
+          {services.map((service) => (
+            <div key={service.id} className="service-slide">
+              <div className="service-products">
+                {service.items.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    addToCart={addToCart}
+                    showProductDetail={showProductDetail}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Main App Component
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
@@ -388,8 +541,8 @@ function App() {
     // Create flying item with precise positioning
     setFlyingItem({
       product,
-      startX: startX - 20, // Center offset for flying item
-      startY: startY - 20, // Center offset for flying item
+      startX: startX - 20,
+      startY: startY - 20,
       moveX,
       moveY,
     });
@@ -478,7 +631,10 @@ function App() {
         <p>Temukan produk-produk menakjubkan dengan harga terbaik</p>
       </section>
 
+      <Services addToCart={addToCart} showProductDetail={showProductDetail} />
+
       <div className="products-container">
+        <h2>Semua Produk</h2>
         <div className="products-grid">
           {products.map((product) => (
             <ProductCard
