@@ -733,37 +733,6 @@ function App() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       />
-
-      <style jsx>{`
-        .app-container {
-          min-height: 100vh;
-          padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .products-container {
-          padding: 2rem 1rem;
-          padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-        }
-
-        .products-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 1.5rem;
-          padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        @media (max-width: 768px) {
-          .products-grid {
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-          }
-
-          .products-container {
-            padding: 1rem;
-            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-          }
-        }
-      `}</style>
     </div>
   );
 }
