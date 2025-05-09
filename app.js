@@ -374,6 +374,70 @@ function CartModal({
           </button>
         </div>
       </div>
+      <style jsx>{`
+        .cart-modal {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          max-width: 400px;
+          background: white;
+          box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          transform: translateX(100%);
+          transition: transform 0.3s ease-in-out;
+          z-index: 1000;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .cart-modal.open {
+          transform: translateX(0);
+        }
+
+        .cart-items {
+          flex: 1;
+          overflow-y: auto;
+          padding: 1rem;
+          padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+        }
+
+        .cart-total {
+          padding: 1rem;
+          border-top: 1px solid #eee;
+          background: white;
+          position: sticky;
+          bottom: 0;
+          padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+        }
+
+        .checkout-btn {
+          width: 100%;
+          padding: 1rem;
+          background: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          cursor: pointer;
+          margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+          .cart-modal {
+            max-width: 100%;
+          }
+
+          .cart-total {
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+          }
+
+          .checkout-btn {
+            margin-bottom: env(safe-area-inset-bottom);
+          }
+        }
+      `}</style>
     </React.Fragment>
   );
 }
@@ -604,7 +668,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app-container">
       <Header
         cartCount={cartCount}
         toggleCart={() => setIsCartOpen(true)}
@@ -669,6 +733,37 @@ function App() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       />
+
+      <style jsx>{`
+        .app-container {
+          min-height: 100vh;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .products-container {
+          padding: 2rem 1rem;
+          padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+        }
+
+        .products-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 1.5rem;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @media (max-width: 768px) {
+          .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+          }
+
+          .products-container {
+            padding: 1rem;
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+          }
+        }
+      `}</style>
     </div>
   );
 }
