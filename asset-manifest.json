@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shopease-mart/static/css/main.6abb410b.css",
+    "main.js": "/shopease-mart/static/js/main.1f96e3dd.js",
+    "index.html": "/shopease-mart/index.html",
+    "main.6abb410b.css.map": "/shopease-mart/static/css/main.6abb410b.css.map",
+    "main.1f96e3dd.js.map": "/shopease-mart/static/js/main.1f96e3dd.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6abb410b.css",
+    "static/js/main.1f96e3dd.js"
+  ]
+}
